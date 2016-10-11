@@ -18,3 +18,5 @@ $app->get('/', function () use ($app) {
 $app->get('user', function(){
     return 'hola mundo';
 });
+
+$app->get('pay_method', 'PayMethodController@index');
