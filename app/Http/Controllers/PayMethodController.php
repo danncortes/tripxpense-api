@@ -13,7 +13,7 @@ class PayMethodController extends Controller
      */
     public function index()
     {
-        $pay_methods = Pay_methods::all();
+        $pay_methods = Pay_method::all();
         return $pay_methods;
         // $user = new User;
         // $userLevel=$user::userLevel(); /*Get the user level, if is admin...*/
