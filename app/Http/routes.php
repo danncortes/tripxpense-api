@@ -20,3 +20,4 @@ $app->get('user', function(){
 });
 
 $app->get('pay_method', 'PayMethodController@index');
+$app->get('category', 'CategoryController@index');
