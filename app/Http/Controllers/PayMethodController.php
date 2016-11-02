@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Pay_method;
+use Illuminate\Http\Response;
 
 class PayMethodController extends Controller
 {
@@ -25,6 +26,24 @@ class PayMethodController extends Controller
         // else{
         //     return Redirect::to('/dashboard');
         // }
+    }
+
+    public function delete($id)
+    {
+        $pay_method = Pay_method::find($id);
+        if($pay_method != null){
+            try
+                {
+                    $pay_method->delete();
+                    return (new response($pay_method, 200));
+                }
+            catch(Exception $e)
+                {
+                    return $e->getMessage();
+                }
+        }else{
+            return (new response($pay_method, 404));
+        }
     }
 
     //

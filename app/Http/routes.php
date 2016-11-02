@@ -20,4 +20,5 @@ $app->get('user', function(){
 });
 
 $app->get('pay_method', 'PayMethodController@index');
+$app->delete('pay_method/{id}', 'PayMethodController@delete');
 $app->get('category', 'CategoryController@index');
