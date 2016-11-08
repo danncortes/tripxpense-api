@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Pay_method;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class PayMethodController extends Controller
 {
@@ -16,16 +17,25 @@ class PayMethodController extends Controller
     {
         $pay_methods = Pay_method::all();
         return $pay_methods;
-        // $user = new User;
-        // $userLevel=$user::userLevel(); /*Get the user level, if is admin...*/
-        // if($userLevel>0)
-        // {
-        //     $pay_methods = Pay_method::all();
-        //     return View::make('pay_method.index')->with('pay_methods', $pay_methods);   
-        // }
-        // else{
-        //     return Redirect::to('/dashboard');
-        // }
+    }
+
+    public function create(Request $request)
+    {
+        $validate = $this->validate($request, [
+            'name' => 'required|unique:pay_methods,name'
+        ]);
+
+        $pay_method = new Pay_method;
+        $pay_method->name = $request->input('name');
+
+        try{
+            $pay_method->save();
+            return (new response($pay_method, 201));
+        }
+        catch(Exception $e)
+        {
+            return (new response($pay_method, 404));
+        }
     }
 
     public function delete($id)
