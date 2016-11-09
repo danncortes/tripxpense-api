@@ -38,6 +38,13 @@ class PayMethodController extends Controller
         }
     }
 
+    public function find($id)
+    {
+        $pay_method = Pay_method::find($id);
+
+        return $pay_method;
+    }
+
     public function delete($id)
     {
         $pay_method = Pay_method::find($id);
