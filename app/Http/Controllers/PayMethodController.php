@@ -28,13 +28,14 @@ class PayMethodController extends Controller
         $pay_method = new Pay_method;
         $pay_method->name = $request->input('name');
 
-        try{
-            $pay_method->save();
-            return (new response($pay_method, 201));
+        $savePayMethod = $pay_method::createPay_method($pay_method);
+
+        if($savePayMethod){
+            return (new response($savePayMethod, 201));
         }
-        catch(Exception $e)
+        else
         {
-            return (new response($pay_method, 404));
+            return (new response($savePayMethod, 404));
         }
     }
 

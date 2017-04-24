@@ -10,11 +10,11 @@ class Pay_method extends Model
     public static function createPay_method($pay_method){
         try{
             $pay_method->save();
-            return true;
+            return $pay_method;
         }
         catch(Exception $e)
         {
-            return false;
+            return $e;
         }
     }
 }
