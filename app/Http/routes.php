@@ -19,6 +19,10 @@ $app->get('user', function(){
     return 'hola mundo';
 });
 
+//USER
+$app->post('user/create', 'UserController@create');
+
+//PAY METHOD
 $app->get('pay_method', 'PayMethodController@index');
 $app->post('pay_method/create', 'PayMethodController@create');
 $app->delete('pay_method/{id}', 'PayMethodController@delete');

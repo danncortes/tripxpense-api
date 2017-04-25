@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Pay_method;
-/*use Illuminate\Http\Response;
-use Illuminate\Http\Request;*/
+use App\User;
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -19,33 +20,38 @@ class UserController extends Controller
         return $pay_methods;
     }
 
-    public function create()
+    public function create(Request $request)
 	{
-		$user= new User;
-		$returnValidate=$user::validateUser();
-		if(! $returnValidate->fails())
-		{
-			$saveUser=$user::createUser($user);
-			if($saveUser==true){
-				
-				// sending a welcome email
-				Mail::send('emails.welcome', array('key' => Input::get('name')), function($message)
-				{
-				    $message->to(Input::get('email'), Input::get('name'))->subject('Welcome!');
-				});
+        $validate = $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:6',
+            'password_confirmation' => 'required|same:password'
+        ]);
 
-				//return Redirect::to('/dashboard');
+		$user = new User;
 
-			}
-			else
-			{
-				//return Redirect::route('user.create')->withInput()->with('message', 'Error saving data!');
-			}
-		}
-		else
-		{
-			//return Redirect::route('user.create')->withInput()->withErrors($returnValidate);
-		}
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user->level = $request->input('level');
+
+        $createUser = $user::createUser($user);
+
+        if($createUser){
+            
+            return (new response($createUser, 201));
+            // sending a welcome email
+            /*Mail::send('emails.welcome', array('key' => Input::get('name')), function($message)
+            {
+                $message->to(Input::get('email'), Input::get('name'))->subject('Welcome!');
+            });*/
+
+        }
+        else
+        {
+            return (new response($createUser, 404));
+        }
 	}
 
     public function find($id)

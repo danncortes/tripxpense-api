@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -47,10 +48,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /*CREATE USER*/
 	public static function createUser($user){
-		$user->name = Input::get('name');
-		$user->email = Input::get('email');
-		$user->password = Hash::make(Input::get('password'));
-		$user->level = Input::get('level');
 
 		if($user->level==null){
 			$user->level=0;
@@ -59,11 +56,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		try{
 			$user->save();
 			Auth::login($user); /*creamos una variable de autenticación*/
-			return true; /*redireccionamos a /dashboard*/
 		}
 		catch(Exception $e)
 		{
-			return false;
+			return $e;
 		}
 	}
 }
