@@ -25,7 +25,15 @@ $app->post('user/create', 'UserController@create');
 //PAY METHOD
 $app->get('pay_method', 'PayMethodController@index');
 $app->post('pay_method/create', 'PayMethodController@create');
+$app->put('pay_method/update/{id}', 'PayMethodController@update');
 $app->delete('pay_method/{id}', 'PayMethodController@delete');
 $app->get('pay_method/{id}', 'PayMethodController@find');
+
+//PAY METHOD
+$app->get('category', 'CategoryController@index');
+/*$app->post('pay_method/create', 'PayMethodController@create');
+$app->put('pay_method/update/{id}', 'PayMethodController@update');
+$app->delete('pay_method/{id}', 'PayMethodController@delete');
+$app->get('pay_method/{id}', 'PayMethodController@find');*/
 
 $app->get('category', 'CategoryController@index');

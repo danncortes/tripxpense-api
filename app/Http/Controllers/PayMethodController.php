@@ -46,6 +46,28 @@ class PayMethodController extends Controller
         return $pay_method;
     }
 
+    public function update(Request $request, $id)
+    {
+        $pay_method = Pay_method::find($id);
+
+        $validate = $this->validate($request, [
+            'name' => 'required|unique:pay_methods,name'
+        ]);
+
+        $newPay_method = new Pay_method;
+        $pay_method->name = $request->input('name');
+
+		$updatePay_method=$newPay_method::updatePay_method($pay_method);
+
+        if($updatePay_method){
+            return (new response($updatePay_method, 201));
+        }
+        else
+        {
+            return (new response($updatePay_method, 404));
+        }
+    }
+
     public function delete($id)
     {
         $pay_method = Pay_method::find($id);

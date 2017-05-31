@@ -17,4 +17,15 @@ class Pay_method extends Model
             return $e;
         }
     }
+
+    public static function updatePay_method($pay_method){
+        try{
+            $pay_method->save();
+            return $pay_method;
+        }
+        catch(Exception $e)
+        {
+            return $e;
+        }
+    }
 }
