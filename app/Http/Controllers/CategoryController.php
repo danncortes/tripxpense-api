@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -11,21 +13,35 @@ class CategoryController extends Controller
      *
      * @return void
      */
+
+    /**
+    * All Categories
+    */
     public function index()
     {
         $categories = Category::all();
         return $categories;
-        // $user = new User;
-        // $userLevel=$user::userLevel(); /*Get the user level, if is admin...*/
-        // if($userLevel>0)
-        // {
-        //     $pay_methods = Pay_method::all();
-        //     return View::make('pay_method.index')->with('pay_methods', $pay_methods);   
-        // }
-        // else{
-        //     return Redirect::to('/dashboard');
-        // }
+        
     }
+
+    public function delete($id)
+    {
+        $category = Category::find($id);
+        if($category!= null){
+            try
+                {
+                    $category->delete();
+                    return (new response($category, 200));
+                }
+            catch(Exception $e)
+                {
+                    return $e->getMessage();
+                }
+        }else{
+            return (new response($category, 404));
+        }
+    }
+
 
     //
 }

@@ -31,6 +31,7 @@ $app->get('pay_method/{id}', 'PayMethodController@find');
 
 //PAY METHOD
 $app->get('category', 'CategoryController@index');
+$app->delete('category/{id}', 'CategoryController@delete');
 /*$app->post('pay_method/create', 'PayMethodController@create');
 $app->put('pay_method/update/{id}', 'PayMethodController@update');
 $app->delete('pay_method/{id}', 'PayMethodController@delete');
