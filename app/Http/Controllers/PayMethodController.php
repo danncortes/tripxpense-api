@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Pay_method;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+
+use App\Pay_method;
 
 class PayMethodController extends Controller
 {
