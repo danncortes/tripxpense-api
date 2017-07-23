@@ -15,13 +15,6 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->get('user', function(){
-    return 'hola mundo';
-});
-
-//USER
-$app->post('user/create', 'UserController@create');
-
 //PAY METHOD
 $app->get('pay_method', 'PayMethodController@index');
 $app->post('pay_method/create', 'PayMethodController@create');
@@ -37,9 +30,10 @@ $app->post('category/create', 'CategoryController@create');
 //TRAVEL
 $app->get('travel/{user_id}', 'TravelController@index');
 $app->post('travel/create', 'TravelController@create');
+$app->delete('travel/{id}', 'TravelController@delete');
 
 //STATS_PAYMETHOD_TRAVEL
-$app->get('stats/paymethod_travel/{user_id}' , 'StatsController@getPaymethodTravel');
+$app->get('stats/paymethod_travel/{user_id}/{travel_id}' , 'StatsController@getPaymethodTravel');
 
 /*$app->post('pay_method/create', 'PayMethodController@create');
 $app->put('pay_method/update/{id}', 'PayMethodController@update');

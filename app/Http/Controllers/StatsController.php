@@ -14,9 +14,9 @@ class StatsController extends Controller
      *
      * @return void
      */
-    public function getPaymethodTravel($user_id)
+    public function getPaymethodTravel($user_id, $travel_id)
     {
-        $stats = Stats_paymethods_travel::where('user_id', $user_id)->orderBy('travel_id', 'DESC')->get();
+        $stats = Stats_paymethods_travel::where('user_id', $user_id)->where('travel_id', $travel_id)->get();
         return $stats;
     }
 

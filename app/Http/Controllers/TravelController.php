@@ -29,6 +29,7 @@ class TravelController extends Controller
         $new_stat->travel_id = $travel_id;
         $new_stat->paymethod_id = $pay_method->id;
         $new_stat->paymethod_tag_name = str_replace(" ","_", strtolower($pay_method->name));
+        $new_stat->paymethod_name = $pay_method->name;
         $new_stat->spent = 0;
         $new_stat->income = 0;
         $new_stat->operations = 0;
@@ -78,6 +79,24 @@ class TravelController extends Controller
         else
         {
             return (new response($saveTravel, 404));
+        }
+    }
+
+    public function delete($id)
+    {
+        $travel = Travel::find($id);
+        if($travel != null){
+            try
+                {
+                    $travel->delete();
+                    return (new response($travel, 200));
+                }
+            catch(Exception $e)
+                {
+                    return $e->getMessage();
+                }
+        }else{
+            return (new response($travel, 404));
         }
     }
 
