@@ -31,6 +31,7 @@ $app->post('category/create', 'CategoryController@create');
 $app->get('travel/{user_id}', 'TravelController@index');
 $app->post('travel/create', 'TravelController@create');
 $app->delete('travel/{id}', 'TravelController@delete');
+$app->put('travel/update/{travel_id}', 'TravelController@update');
 
 //STATS_PAYMETHOD_TRAVEL
 $app->get('stats/paymethod_travel/{user_id}/{travel_id}' , 'StatsController@getPaymethodTravel');

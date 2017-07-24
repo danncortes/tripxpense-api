@@ -82,6 +82,42 @@ class TravelController extends Controller
         }
     }
 
+
+    public function update(Request $request, $travel_id)
+    {
+        $travel = Travel::find($travel_id);
+
+        $validate = $this->validate($request, [
+            'name' => 'required',
+            'start_date' => 'required',
+            'finish_date' => 'required'
+        ]);
+
+        $newTravel = new Travel;
+        $travel->name = $request->input('name');
+        $travel->start_date = $request->input('start_date');
+        $travel->finish_date = $request->input('finish_date');
+        $travel->start_tdc_balance = $request->input('start_tdc_balance');
+        $travel->start_tdd_balance = $request->input('start_tdd_balance');
+        $travel->start_cash_balance = $request->input('start_cash_balance');
+        $travel->current_tdc_balance = $request->input('start_tdc_balance');
+        $travel->current_tdd_balance = $request->input('start_tdd_balance');
+        $travel->current_cash_balance = $request->input('start_cash_balance');
+
+		$updateTravel=$newTravel::updateTravel($travel);
+
+        if($updateTravel){
+            return (new response($updateTravel, 201));
+        }
+        else
+        {
+            return (new response($updateTravel, 404));
+        }
+    }
+
+
+
+
     public function delete($id)
     {
         $travel = Travel::find($id);

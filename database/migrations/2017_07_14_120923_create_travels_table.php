@@ -17,8 +17,8 @@ class CreateTravelsTable extends Migration
         Schema::create('travels', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('name', 35);
-			$table->date('start_date');
-			$table->date('finish_date');
+			$table->datetime('start_date');
+			$table->datetime('finish_date');
 			$table->decimal('start_cash_balance',10,2)->default(0);
             $table->decimal('current_cash_balance',10,2)->default(0);
 			$table->decimal('start_tdc_balance',10,2)->default(0);

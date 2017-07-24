@@ -19,4 +19,15 @@ class Travel extends Model
         }
     }
 
+    public static function updateTravel($travel){
+        try{
+            $travel->save();
+            return $travel;
+        }
+        catch(Exception $e)
+        {
+            return $e;
+        }
+    }
+
 }
