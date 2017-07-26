@@ -6,6 +6,8 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 use App\Stats_paymethods_travel;
+use App\Stats_travel_categories;
+use App\Category;
 
 class StatsController extends Controller
 {
@@ -17,6 +19,14 @@ class StatsController extends Controller
     public function getPaymethodTravel($user_id, $travel_id)
     {
         $stats = Stats_paymethods_travel::where('user_id', $user_id)->where('travel_id', $travel_id)->get();
+        return $stats;
+    }
+
+    public function getCategoryTravel($user_id, $travel_id)
+    {
+        $stats = Stats_travel_categories::where('user_id', $user_id)->where('travel_id', $travel_id)->get();
+        $categories = Category::all();
+        
         return $stats;
     }
 

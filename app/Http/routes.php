@@ -35,6 +35,8 @@ $app->put('travel/update/{travel_id}', 'TravelController@update');
 
 //STATS_PAYMETHOD_TRAVEL
 $app->get('stats/paymethod_travel/{user_id}/{travel_id}' , 'StatsController@getPaymethodTravel');
+//STATS_CATEGORY_TRAVEL
+$app->get('stats/category_travel/{user_id}/{travel_id}' , 'StatsController@getCategoryTravel');
 
 /*$app->post('pay_method/create', 'PayMethodController@create');
 $app->put('pay_method/update/{id}', 'PayMethodController@update');
