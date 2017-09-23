@@ -44,7 +44,13 @@ class PayMethodController extends Controller
     {
         $pay_method = Pay_method::find($id);
 
-        return $pay_method;
+        if ($pay_method){
+            return (new response($pay_method, 200));
+        }
+        else
+        {
+            return (new response($pay_method, 404));
+        }
     }
 
     public function update(Request $request, $id)

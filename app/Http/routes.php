@@ -28,7 +28,8 @@ $app->delete('category/{id}', 'CategoryController@delete');
 $app->post('category/create', 'CategoryController@create');
 
 //TRAVEL
-$app->get('travel/{user_id}', 'TravelController@index');
+$app->get('travels/{user_id}', 'TravelController@index');
+$app->get('travel/{id}', 'TravelController@find');
 $app->post('travel/create', 'TravelController@create');
 $app->delete('travel/{id}', 'TravelController@delete');
 $app->put('travel/update/{travel_id}', 'TravelController@update');

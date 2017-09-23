@@ -22,6 +22,19 @@ class TravelController extends Controller
         return $travels;
     }
 
+    public function find($id)
+    {
+        $travels = Travel::find($id);
+        
+        if ($travels){
+            return (new response($travels, 200));
+        }
+        else
+        {
+            return (new response($travels, 404));
+        }
+    }
+
     public function createStatPaymethodTravel($user_id, $travel_id, $pay_method){
 
         $new_stat = new Stats_paymethods_travel;
