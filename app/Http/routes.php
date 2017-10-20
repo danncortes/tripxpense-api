@@ -42,8 +42,5 @@ $app->get('stats/category_travel/{user_id}/{travel_id}' , 'StatsController@getCa
 
 //OPERATIONS
 $app->get('operations/{user_id}', 'OperationController@index');
+$app->post('operation/create', 'OperationController@create');
 
-/*$app->post('pay_method/create', 'PayMethodController@create');
-$app->put('pay_method/update/{id}', 'PayMethodController@update');
-$app->delete('pay_method/{id}', 'PayMethodController@delete');
-$app->get('pay_method/{id}', 'PayMethodController@find');*/

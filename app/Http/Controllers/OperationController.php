@@ -20,25 +20,39 @@ class OperationController extends Controller
         return $operations;
     }
 
-    // public function create(Request $request)
-    // {
-    //     $validate = $this->validate($request, [
-    //         'name' => 'required|unique:pay_methods,name'
-    //     ]);
+    public function create(Request $request)
+    {
+        $validate = $this->validate($request, [
+            'title' => 'required',
+            'cost' => 'required|numeric',
+            'date_op' => 'required',
+            'type' => 'required|string',
+            'cod_method' => 'required|numeric',
+            'cod_travel' => 'required|numeric',
+            'cod_category' => 'required|numeric',
+            'user_id' => 'required|numeric',
+        ]);
 
-    //     $pay_method = new Pay_method;
-    //     $pay_method->name = $request->input('name');
+        $operation = new Operation;
+        $operation->title = $request->input('title');
+        $operation->cost = $request->input('cost');
+        $operation->date_op = $request->input('date_op');
+        $operation->type = $request->input('type');
+        $operation->cod_method = $request->input('cod_method');
+        $operation->cod_travel = $request->input('cod_travel');
+        $operation->cod_category = $request->input('cod_category');
+        $operation->user_id = $request->input('user_id');
 
-    //     $savePayMethod = $pay_method::createPay_method($pay_method);
+        $saveOperation = $operation::createOperation($operation);
 
-    //     if($savePayMethod){
-    //         return (new response($savePayMethod, 201));
-    //     }
-    //     else
-    //     {
-    //         return (new response($savePayMethod, 404));
-    //     }
-    // }
+        if($saveOperation){
+            return (new response($saveOperation, 201));
+        }
+        else
+        {
+            return (new response($saveOperation, 404));
+        }
+    }
 
     // public function find($id)
     // {
