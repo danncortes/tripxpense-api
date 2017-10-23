@@ -28,6 +28,7 @@ class PayMethodController extends Controller
 
         $pay_method = new Pay_method;
         $pay_method->name = $request->input('name');
+        $pay_method->tag_name = str_replace(' ', '_', strtolower($request->input('name')));
 
         $savePayMethod = $pay_method::createPay_method($pay_method);
 

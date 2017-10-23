@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use App\Http\Controllers\StatsController;
 
 use App\Operation;
 
@@ -46,7 +47,15 @@ class OperationController extends Controller
         $saveOperation = $operation::createOperation($operation);
 
         if($saveOperation){
-            return (new response($saveOperation, 201));
+            $savePaymethodStat = (new StatsController)->updatePaymethodTravel($operation);
+
+            if($operation->type === 'outcome'){
+                $saveCategoryStat = (new StatsController)->updateCategoryTravel($operation);
+            }
+
+            if($savePaymethodStat){
+                return (new response($saveOperation, 201));
+            }
         }
         else
         {
