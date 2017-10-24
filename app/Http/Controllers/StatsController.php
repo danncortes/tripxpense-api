@@ -74,7 +74,7 @@ class StatsController extends Controller
             $stat->category_name = Category::find($operation->cod_category)->name;
         }
 
-        $stat->spent += $operation->cost;
+        $stat->spent = $stat->spent + $operation->cost;
         ++$stat->operations;
 
         $CategoryStat = new Stats_travel_categories;

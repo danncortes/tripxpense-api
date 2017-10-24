@@ -128,8 +128,54 @@ class TravelController extends Controller
         }
     }
 
+    function updateBalance($method, $cost, $travel){
+        switch($method) {
+            case 1:
+                $travel->current_tdd_balance += $cost;
+                break;
+            case 2:
+                $travel->current_tdc_balance += $cost;
+                break;
+            case 3:
+                $travel->current_cash_balance += $cost;
+                break;
+        }
 
+        return $travel;
+    }
 
+    public function updateAfterOperation($method, $operation, $previous_cost){
+        
+        $cost = $operation->cost;
+        $travel = Travel::find($operation->cod_travel);
+
+        if($method == 'delete' && $operation->type == 'income' || $method == 'create' && $operation->type == 'outcome'){
+            $cost = -$operation->cost;
+        }
+
+        if($method == 'delete'){
+            --$travel->operations;
+        }
+        else if($method == 'create'){
+            ++$travel->operations;
+        }
+        else if($method == 'update'){
+            /* $cost = $operation->type == 'outcome' ? $previous_cost - $operation->cost : $cost = $operation->cost - $previous_cost; */
+            if($operation->type == 'outcome'){
+                $cost = $previous_cost - $operation->cost;
+            }
+            else if($operation->type == 'income'){
+                $cost = $operation->cost - $previous_cost;
+            }
+        }
+
+        $travel = $this->updateBalance($operation->cod_method, $cost, $travel);
+        
+        $newTravel = new Travel;
+        $updateTravel=$newTravel::updateTravel($travel);
+
+        return $updateTravel;
+    }
 
     public function delete($id)
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\TravelController;
 
 use App\Operation;
 
@@ -15,9 +16,9 @@ class OperationController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index($user_id)
     {
-        $operations = Operation::all();
+        $operations = Operation::where('user_id', $user_id)->get();
         return $operations;
     }
 
@@ -48,6 +49,7 @@ class OperationController extends Controller
 
         if($saveOperation){
             $savePaymethodStat = (new StatsController)->updatePaymethodTravel($operation);
+            $updateTravel = (new TravelController)->updateAfterOperation('create', $operation, 0);
 
             if($operation->type === 'outcome'){
                 $saveCategoryStat = (new StatsController)->updateCategoryTravel($operation);
