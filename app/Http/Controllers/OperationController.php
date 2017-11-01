@@ -22,6 +22,12 @@ class OperationController extends Controller
         return $operations;
     }
 
+    public function operationsByTravel($user_id, $cod_travel)
+    {
+        $operations = Operation::where('user_id', $user_id)->where('cod_travel', $cod_travel)->get();
+        return $operations;
+    }
+
     public function create(Request $request)
     {
         $validate = $this->validate($request, [
