@@ -42,6 +42,6 @@ $app->get('stats/category_travel/{user_id}/{travel_id}' , 'StatsController@getCa
 
 //OPERATIONS
 $app->get('operations/{user_id}', 'OperationController@index');
-$app->get('operations_by_travel/{user_id}/{cod_travel}', 'OperationController@index');
+$app->get('operations_by_travel/{user_id}/{cod_travel}', 'OperationController@operationsByTravel');
 $app->post('operation/create', 'OperationController@create');
 
