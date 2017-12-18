@@ -54,11 +54,11 @@ class OperationController extends Controller
         $saveOperation = $operation::createOperation($operation);
 
         if($saveOperation){
-            $savePaymethodStat = (new StatsController)->updatePaymethodTravel($operation);
+            $savePaymethodStat = (new StatsController)->updatePaymethodTravel('create', $operation);
             $updateTravel = (new TravelController)->updateAfterOperation('create', $operation, 0);
 
             if($operation->type === 'outcome'){
-                $saveCategoryStat = (new StatsController)->updateCategoryTravel($operation);
+                $saveCategoryStat = (new StatsController)->updateCategoryTravel('create', $operation);
             }
 
             if($savePaymethodStat){
@@ -113,6 +113,12 @@ class OperationController extends Controller
             try
                 {
                     $operation->delete();
+                    $savePaymethodStat = (new StatsController)->updatePaymethodTravel('delete', $operation);
+                    $updateTravel = (new TravelController)->updateAfterOperation('delete', $operation, 0);
+                    if($operation->type === 'outcome'){
+                        $saveCategoryStat = (new StatsController)->updateCategoryTravel('delete', $operation);
+                    }
+
                     return (new response($operation, 200));
                 }
             catch(Exception $e)

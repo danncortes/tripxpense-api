@@ -18,7 +18,7 @@ class StatsController extends Controller
      * @return void
      */
 
-    public function updatePaymethodTravel($operation){
+    public function updatePaymethodTravel($type, $operation, $prevOp = ''){
         
         $user_id = $operation->user_id;
         $travel_id = $operation->cod_travel;
@@ -41,19 +41,27 @@ class StatsController extends Controller
             $stat->paymethod_tag_name = $pay_method->tag_name;
             $stat->paymethod_name = $pay_method->name;
         }
-
-        if($operation->type === 'outcome'){
-            $stat->spent += $operation->cost;
-        }else{
-            $stat->income += $operation->cost;
+        if($type === 'create'){
+            if($operation->type === 'outcome'){
+                $stat->spent += $operation->cost;
+            }else{
+                $stat->income += $operation->cost;
+            }
+            ++$stat->operations;
+        }else if($type === 'delete'){
+            if($operation->type === 'outcome'){
+                $stat->spent -= $operation->cost;
+            }else{
+                $stat->income -= $operation->cost;
+            }
+            --$stat->operations;
         }
-        ++$stat->operations;
         $PaymethodStat = new Stats_paymethods_travel;
         $saveStat = $PaymethodStat::createStat($stat);
         return $saveStat;
     }
 
-    public function updateCategoryTravel($operation){
+    public function updateCategoryTravel($type, $operation){
 
         $user_id = $operation->user_id;
         $travel_id = $operation->cod_travel;
@@ -61,7 +69,7 @@ class StatsController extends Controller
 
         $stat = Stats_travel_categories::where('user_id', $user_id)->where('travel_id', $travel_id)->where('category_id', $cod_category)->get();
 
-        if(!count($stat) == 0){
+        if(count($stat) > 0){
             $stat = $stat[0];
         }
         else {
@@ -73,9 +81,13 @@ class StatsController extends Controller
             $stat->category_id = $operation->cod_category;
             $stat->category_name = Category::find($operation->cod_category)->name;
         }
-
-        $stat->spent = $stat->spent + $operation->cost;
-        ++$stat->operations;
+        if($type === 'create'){
+            $stat->spent += $operation->cost;
+            ++$stat->operations;
+        }else if($type === 'delete'){
+            $stat->spent -= $operation->cost;
+            --$stat->operations;
+        }
 
         $CategoryStat = new Stats_travel_categories;
         $saveStat = $CategoryStat::createStat($stat);
