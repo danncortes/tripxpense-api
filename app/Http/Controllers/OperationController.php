@@ -22,6 +22,19 @@ class OperationController extends Controller
         return $operations;
     }
 
+    public function find($id)
+    {
+        $operation = Operation::find($id);
+        
+        if ($operation){
+            return (new response($operation, 200));
+        }
+        else
+        {
+            return (new response($operation, 404));
+        }
+    }
+
     public function operationsByTravel($user_id, $cod_travel)
     {
         $operations = Operation::where('user_id', $user_id)->where('cod_travel', $cod_travel)->get();
@@ -51,11 +64,11 @@ class OperationController extends Controller
         $operation->cod_category = $request->input('cod_category');
         $operation->user_id = $request->input('user_id');
 
-        $saveOperation = $operation::createOperation($operation);
+        $saveOperation = $operation::saveOperation($operation);
 
         if($saveOperation){
             $savePaymethodStat = (new StatsController)->updatePaymethodTravel('create', $operation);
-            $updateTravel = (new TravelController)->updateAfterOperation('create', $operation, 0);
+            $updateTravel = (new TravelController)->updateAfterOperation('create', $operation, []);
 
             if($operation->type === 'outcome'){
                 $saveCategoryStat = (new StatsController)->updateCategoryTravel('create', $operation);
@@ -71,41 +84,50 @@ class OperationController extends Controller
         }
     }
 
-    // public function find($id)
-    // {
-    //     $pay_method = Pay_method::find($id);
 
-    //     if ($pay_method){
-    //         return (new response($pay_method, 200));
-    //     }
-    //     else
-    //     {
-    //         return (new response($pay_method, 404));
-    //     }
-    // }
+    public function update(Request $request, $operation_id)
+    {
+        $operation = Operation::find($operation_id);
 
-    // public function update(Request $request, $id)
-    // {
-    //     $pay_method = Pay_method::find($id);
+        $validate = $this->validate($request, [
+            'title' => 'required',
+            'cost' => 'required|numeric',
+            'date_op' => 'required',
+            'type' => 'required|string',
+            'cod_method' => 'required|numeric',
+            'cod_travel' => 'required|numeric',
+            'cod_category' => 'required|numeric',
+            'user_id' => 'required|numeric',
+        ]);
 
-    //     $validate = $this->validate($request, [
-    //         'name' => 'required|unique:pay_methods,name'
-    //     ]);
+        $modelOperation = new Operation;
+        $oldOperation = clone $operation;
+        $operation->title = $request->input('title');
+        $operation->cost = $request->input('cost');
+        $operation->date_op = $request->input('date_op');
+        $operation->type = $request->input('type');
+        $operation->cod_method = $request->input('cod_method');
+        $operation->cod_travel = $request->input('cod_travel');
+        $operation->cod_category = $request->input('cod_category');
+        $operation->user_id = $request->input('user_id');
 
-    //     $newPay_method = new Pay_method;
-    //     $pay_method->name = $request->input('name');
+        $saveOperation = $modelOperation::saveOperation($operation);
 
-	// 	$updatePay_method=$newPay_method::updatePay_method($pay_method);
-
-    //     if($updatePay_method){
-    //         return (new response($updatePay_method, 201));
-    //     }
-    //     else
-    //     {
-    //         return (new response($updatePay_method, 404));
-    //     }
-    // }
-
+        if($saveOperation){
+            $updateTravel = (new TravelController)->updateAfterOperation('delete', $oldOperation, []);
+            $updateTravel = (new TravelController)->updateAfterOperation('create', $operation, []);
+            $savePaymethodStat = (new StatsController)->updatePaymethodTravel('delete', $oldOperation);
+            $savePaymethodStat = (new StatsController)->updatePaymethodTravel('create', $operation);
+            $saveCategoryStat = (new StatsController)->updateCategoryTravel('delete', $oldOperation);
+            $saveCategoryStat = (new StatsController)->updateCategoryTravel('create', $operation);
+            return (new response($saveOperation, 201));
+        }
+        else
+        {
+            return (new response($saveOperation, 404));
+        }
+    }
+    
     public function delete($id)
     {
         $operation = Operation::find($id);

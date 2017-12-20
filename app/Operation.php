@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Operation extends Model
 {
-    public static function createOperation($operation){
+    public static function saveOperation($operation){
         try{
             $operation->save();
             return $operation;

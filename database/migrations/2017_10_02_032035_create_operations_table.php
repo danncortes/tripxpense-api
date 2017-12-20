@@ -18,7 +18,7 @@ class CreateOperationsTable extends Migration
             $table->string('title', 40);
             $table->text('description');
             $table->decimal('cost',6,2);
-            $table->date('date_op');
+            $table->datetime('date_op');
             $table->string('type')->default('outcome');
             $table->integer('cod_method')->unsigned();
             $table->integer('cod_travel')->unsigned();

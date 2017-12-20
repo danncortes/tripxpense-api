@@ -42,7 +42,9 @@ $app->get('stats/category_travel/{user_id}/{travel_id}' , 'StatsController@getCa
 
 //OPERATIONS
 $app->get('operations/{user_id}', 'OperationController@index');
+$app->get('operation/{id}', 'OperationController@find');
 $app->get('operations_by_travel/{user_id}/{cod_travel}', 'OperationController@operationsByTravel');
 $app->post('operation/create', 'OperationController@create');
 $app->delete('operation/{id}', 'OperationController@delete');
+$app->put('operation/update/{operation_id}', 'OperationController@update' );
 

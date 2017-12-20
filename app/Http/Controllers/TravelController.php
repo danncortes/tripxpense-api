@@ -144,13 +144,13 @@ class TravelController extends Controller
         return $travel;
     }
 
-    public function updateAfterOperation($method, $operation, $previous_cost){
+    public function updateAfterOperation($method, $newOperation, $previous_cost){
         
-        $cost = $operation->cost;
-        $travel = Travel::find($operation->cod_travel);
+        $cost = $newOperation->cost;
+        $travel = Travel::find($newOperation->cod_travel);
 
-        if($method == 'delete' && $operation->type == 'income' || $method == 'create' && $operation->type == 'outcome'){
-            $cost = -$operation->cost;
+        if($method == 'delete' && $newOperation->type == 'income' || $method == 'create' && $newOperation->type == 'outcome'){
+            $cost = -$newOperation->cost;
         }
 
         if($method == 'delete'){
@@ -159,17 +159,8 @@ class TravelController extends Controller
         else if($method == 'create'){
             ++$travel->operations;
         }
-        else if($method == 'update'){
-            /* $cost = $operation->type == 'outcome' ? $previous_cost - $operation->cost : $cost = $operation->cost - $previous_cost; */
-            if($operation->type == 'outcome'){
-                $cost = $previous_cost - $operation->cost;
-            }
-            else if($operation->type == 'income'){
-                $cost = $operation->cost - $previous_cost;
-            }
-        }
 
-        $travel = $this->updateBalance($operation->cod_method, $cost, $travel);
+        $travel = $this->updateBalance($newOperation->cod_method, $cost, $travel);
         
         $newTravel = new Travel;
         $updateTravel=$newTravel::updateTravel($travel);
